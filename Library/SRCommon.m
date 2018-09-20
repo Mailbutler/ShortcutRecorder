@@ -22,7 +22,7 @@ NSBundle *SRBundle()
     static dispatch_once_t onceToken;
     static NSBundle *Bundle = nil;
     dispatch_once(&onceToken, ^{
-        Bundle = [NSBundle bundleWithIdentifier:@"com.kulakov.ShortcutRecorder"];
+        Bundle = [NSBundle bundleWithIdentifier:@"com.mailbutler.ShortcutRecorder"];
 
         if (!Bundle)
         {
