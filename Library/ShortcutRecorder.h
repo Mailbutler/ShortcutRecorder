@@ -18,23 +18,6 @@
 #import <ShortcutRecorder/SRValidator.h>
 #import <ShortcutRecorder/SRRecorderControl.h>
 
-
-#ifndef IBInspectable
-    #define IBInspectable
-#endif
-
-#ifndef IB_DESIGNABLE
-    #define IB_DESIGNABLE
-#endif
-
-#ifndef NSAppKitVersionNumber10_6
-    #define NSAppKitVersionNumber10_6 1038
-#endif
-
-#ifndef NSAppKitVersionNumber10_9
-    #define NSAppKitVersionNumber10_9 1265
-#endif
-
 #ifndef NSEDGEINSETS_DEFINED
     typedef struct NSEdgeInsets {
         CGFloat top;

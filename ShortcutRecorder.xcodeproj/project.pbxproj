@@ -85,7 +85,6 @@
 		0D6B246B180304DE00CE1142 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		0D6B246C180304DE00CE1142 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		0D6B246D180304DE00CE1142 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		0D6B2487180304DE00CE1142 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		0D6B249C180304FA00CE1142 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		0D6B249E180304FA00CE1142 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/IKCodeAutoLayoutWindowController.xib; sourceTree = "<group>"; };
 		0D6B24A0180304FA00CE1142 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/IKIBAutoLayoutWindowController.xib; sourceTree = "<group>"; };
@@ -268,7 +267,6 @@
 			children = (
 				E2741AE01673C90B00A139BD /* Cocoa.framework */,
 				E273124B1349EE6500A84433 /* Carbon.framework */,
-				0D6B2487180304DE00CE1142 /* XCTest.framework */,
 				0D6B246A180304DE00CE1142 /* Other Frameworks */,
 			);
 			name = Frameworks;

@@ -120,31 +120,20 @@ typedef NS_ENUM(NSUInteger, _SRRecorderControlButtonTag)
     _mouseTrackingButtonTag = _SRRecorderControlInvalidButtonTag;
     _snapBackButtonToolTipTag = NSIntegerMax;
 
-    if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_6)
-    {
-        self.translatesAutoresizingMaskIntoConstraints = NO;
+    self.translatesAutoresizingMaskIntoConstraints = NO;
 
-        [self setContentHuggingPriority:NSLayoutPriorityDefaultLow
-                         forOrientation:NSLayoutConstraintOrientationHorizontal];
-        [self setContentHuggingPriority:NSLayoutPriorityRequired
-                         forOrientation:NSLayoutConstraintOrientationVertical];
+    [self setContentHuggingPriority:NSLayoutPriorityDefaultLow
+                     forOrientation:NSLayoutConstraintOrientationHorizontal];
+    [self setContentHuggingPriority:NSLayoutPriorityRequired
+                     forOrientation:NSLayoutConstraintOrientationVertical];
 
-        [self setContentCompressionResistancePriority:NSLayoutPriorityDefaultLow
-                                       forOrientation:NSLayoutConstraintOrientationHorizontal];
-        [self setContentCompressionResistancePriority:NSLayoutPriorityRequired
-                                       forOrientation:NSLayoutConstraintOrientationVertical];
-    }
+    [self setContentCompressionResistancePriority:NSLayoutPriorityDefaultLow
+                                   forOrientation:NSLayoutConstraintOrientationHorizontal];
+    [self setContentCompressionResistancePriority:NSLayoutPriorityRequired
+                                   forOrientation:NSLayoutConstraintOrientationVertical];
 
-    if (floor(NSAppKitVersionNumber) <= NSAppKitVersionNumber10_9)
-    {
-        _shapeXRadius = _SRRecorderControlShapeXRadius;
-        _shapeYRadious = _SRRecorderControlShapeYRadius;
-    }
-    else
-    {
-        _shapeXRadius = _SRRecorderControlYosemiteShapeXRadius;
-        _shapeYRadious = _SRRecorderControlYosemiteShapeYRadius;
-    }
+    _shapeXRadius = _SRRecorderControlYosemiteShapeXRadius;
+    _shapeYRadious = _SRRecorderControlYosemiteShapeYRadius;
 
     self.toolTip = SRLoc(@"Click to record shortcut");
     [self updateTrackingAreas];
@@ -191,8 +180,7 @@ typedef NS_ENUM(NSUInteger, _SRRecorderControlButtonTag)
         [self endRecording];
 
     // Focus ring is only drawn when view is enabled
-    if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_6)
-        [self noteFocusRingMaskChanged];
+    [self noteFocusRingMaskChanged];
 }
 
 - (void)setObjectValue:(NSDictionary *)newObjectValue
@@ -285,11 +273,6 @@ typedef NS_ENUM(NSUInteger, _SRRecorderControlButtonTag)
 {
     NSRect shapeBounds = self.bounds;
     shapeBounds.size.height = _SRRecorderControlHeight - self.alignmentRectInsets.bottom;
-
-    if (floor(NSAppKitVersionNumber) <= NSAppKitVersionNumber10_9)
-    {
-        shapeBounds = NSInsetRect(shapeBounds, 1.0, 1.0);
-    }
 
     return [NSBezierPath bezierPathWithRoundedRect:shapeBounds
                                            xRadius:_shapeXRadius
@@ -701,7 +684,7 @@ typedef NS_ENUM(NSUInteger, _SRRecorderControlButtonTag)
 
 - (CGFloat)backingScaleFactor
 {
-    if (floor(NSAppKitVersionNumber) <= NSAppKitVersionNumber10_6 || self.window == nil)
+    if (self.window == nil)
         return 1.0;
     else
         return self.window.backingScaleFactor;
@@ -903,20 +886,15 @@ typedef NS_ENUM(NSUInteger, _SRRecorderControlButtonTag)
     });
 
     // List of supported actions names must be fixed for 10.6, but can vary for 10.7 and above.
-    if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_6)
+    if (self.enabled)
     {
-        if (self.enabled)
-        {
-            if (self.isRecording)
-                return RecorderStateActionNames;
-            else
-                return ButtonStateActionNames;
-        }
+        if (self.isRecording)
+            return RecorderStateActionNames;
         else
-            return @[];
+            return ButtonStateActionNames;
+    } else {
+        return @[];
     }
-    else
-        return AllActions;
 }
 
 - (NSString *)accessibilityActionDescription:(NSString *)anAction
@@ -985,50 +963,25 @@ typedef NS_ENUM(NSUInteger, _SRRecorderControlButtonTag)
 
     static dispatch_once_t OnceToken;
     dispatch_once(&OnceToken, ^{
-        if (floor(NSAppKitVersionNumber) <= NSAppKitVersionNumber10_9)
-        {
-            _SRImages[0] = SRImage(@"shortcut-recorder-bezel-blue-highlighted-left");
-            _SRImages[1] = SRImage(@"shortcut-recorder-bezel-blue-highlighted-middle");
-            _SRImages[2] = SRImage(@"shortcut-recorder-bezel-blue-highlighted-right");
-            _SRImages[3] = SRImage(@"shortcut-recorder-bezel-editing-left");
-            _SRImages[4] = SRImage(@"shortcut-recorder-bezel-editing-middle");
-            _SRImages[5] = SRImage(@"shortcut-recorder-bezel-editing-right");
-            _SRImages[6] = SRImage(@"shortcut-recorder-bezel-graphite-highlight-mask-left");
-            _SRImages[7] = SRImage(@"shortcut-recorder-bezel-graphite-highlight-mask-middle");
-            _SRImages[8] = SRImage(@"shortcut-recorder-bezel-graphite-highlight-mask-right");
-            _SRImages[9] = SRImage(@"shortcut-recorder-bezel-left");
-            _SRImages[10] = SRImage(@"shortcut-recorder-bezel-middle");
-            _SRImages[11] = SRImage(@"shortcut-recorder-bezel-right");
-            _SRImages[12] = SRImage(@"shortcut-recorder-clear-highlighted");
-            _SRImages[13] = SRImage(@"shortcut-recorder-clear");
-            _SRImages[14] = SRImage(@"shortcut-recorder-snapback-highlighted");
-            _SRImages[15] = SRImage(@"shortcut-recorder-snapback");
-            _SRImages[16] = SRImage(@"shortcut-recorder-bezel-disabled-left");
-            _SRImages[17] = SRImage(@"shortcut-recorder-bezel-disabled-middle");
-            _SRImages[18] = SRImage(@"shortcut-recorder-bezel-disabled-right");
-        }
-        else
-        {
-            _SRImages[0] = SRImage(@"shortcut-recorder-yosemite-bezel-blue-highlighted-left");
-            _SRImages[1] = SRImage(@"shortcut-recorder-yosemite-bezel-blue-highlighted-middle");
-            _SRImages[2] = SRImage(@"shortcut-recorder-yosemite-bezel-blue-highlighted-right");
-            _SRImages[3] = SRImage(@"shortcut-recorder-yosemite-bezel-editing-left");
-            _SRImages[4] = SRImage(@"shortcut-recorder-yosemite-bezel-editing-middle");
-            _SRImages[5] = SRImage(@"shortcut-recorder-yosemite-bezel-editing-right");
-            _SRImages[6] = SRImage(@"shortcut-recorder-yosemite-bezel-graphite-highlight-mask-left");
-            _SRImages[7] = SRImage(@"shortcut-recorder-yosemite-bezel-graphite-highlight-mask-middle");
-            _SRImages[8] = SRImage(@"shortcut-recorder-yosemite-bezel-graphite-highlight-mask-right");
-            _SRImages[9] = SRImage(@"shortcut-recorder-yosemite-bezel-left");
-            _SRImages[10] = SRImage(@"shortcut-recorder-yosemite-bezel-middle");
-            _SRImages[11] = SRImage(@"shortcut-recorder-yosemite-bezel-right");
-            _SRImages[12] = SRImage(@"shortcut-recorder-yosemite-clear-highlighted");
-            _SRImages[13] = SRImage(@"shortcut-recorder-yosemite-clear");
-            _SRImages[14] = SRImage(@"shortcut-recorder-yosemite-snapback-highlighted");
-            _SRImages[15] = SRImage(@"shortcut-recorder-yosemite-snapback");
-            _SRImages[16] = SRImage(@"shortcut-recorder-yosemite-bezel-disabled-left");
-            _SRImages[17] = SRImage(@"shortcut-recorder-yosemite-bezel-disabled-middle");
-            _SRImages[18] = SRImage(@"shortcut-recorder-yosemite-bezel-disabled-right");
-        }
+        _SRImages[0] = SRImage(@"shortcut-recorder-yosemite-bezel-blue-highlighted-left");
+        _SRImages[1] = SRImage(@"shortcut-recorder-yosemite-bezel-blue-highlighted-middle");
+        _SRImages[2] = SRImage(@"shortcut-recorder-yosemite-bezel-blue-highlighted-right");
+        _SRImages[3] = SRImage(@"shortcut-recorder-yosemite-bezel-editing-left");
+        _SRImages[4] = SRImage(@"shortcut-recorder-yosemite-bezel-editing-middle");
+        _SRImages[5] = SRImage(@"shortcut-recorder-yosemite-bezel-editing-right");
+        _SRImages[6] = SRImage(@"shortcut-recorder-yosemite-bezel-graphite-highlight-mask-left");
+        _SRImages[7] = SRImage(@"shortcut-recorder-yosemite-bezel-graphite-highlight-mask-middle");
+        _SRImages[8] = SRImage(@"shortcut-recorder-yosemite-bezel-graphite-highlight-mask-right");
+        _SRImages[9] = SRImage(@"shortcut-recorder-yosemite-bezel-left");
+        _SRImages[10] = SRImage(@"shortcut-recorder-yosemite-bezel-middle");
+        _SRImages[11] = SRImage(@"shortcut-recorder-yosemite-bezel-right");
+        _SRImages[12] = SRImage(@"shortcut-recorder-yosemite-clear-highlighted");
+        _SRImages[13] = SRImage(@"shortcut-recorder-yosemite-clear");
+        _SRImages[14] = SRImage(@"shortcut-recorder-yosemite-snapback-highlighted");
+        _SRImages[15] = SRImage(@"shortcut-recorder-yosemite-snapback");
+        _SRImages[16] = SRImage(@"shortcut-recorder-yosemite-bezel-disabled-left");
+        _SRImages[17] = SRImage(@"shortcut-recorder-yosemite-bezel-disabled-middle");
+        _SRImages[18] = SRImage(@"shortcut-recorder-yosemite-bezel-disabled-right");
     });
 }
 
@@ -1036,17 +989,6 @@ typedef NS_ENUM(NSUInteger, _SRRecorderControlButtonTag)
 {
     [self drawBackground:aDirtyRect];
     [self drawInterior:aDirtyRect];
-
-    if (floor(NSAppKitVersionNumber) <= NSAppKitVersionNumber10_6)
-    {
-        if (self.enabled && self.window.firstResponder == self)
-        {
-            [NSGraphicsContext saveGraphicsState];
-            NSSetFocusRingStyle(NSFocusRingOnly);
-            [self.controlShape fill];
-            [NSGraphicsContext restoreGraphicsState];
-        }
-    }
 }
 
 - (void)drawFocusRingMask
@@ -1167,17 +1109,11 @@ typedef NS_ENUM(NSUInteger, _SRRecorderControlButtonTag)
 
 - (BOOL)becomeFirstResponder
 {
-    if (floor(NSAppKitVersionNumber) <= NSAppKitVersionNumber10_6)
-        [self setKeyboardFocusRingNeedsDisplayInRect:self.bounds];
-
     return [super becomeFirstResponder];
 }
 
 - (BOOL)resignFirstResponder
 {
-    if (floor(NSAppKitVersionNumber) <= NSAppKitVersionNumber10_6)
-        [self setKeyboardFocusRingNeedsDisplayInRect:self.bounds];
-
     [self endRecording];
     _mouseTrackingButtonTag = _SRRecorderControlInvalidButtonTag;
     return [super resignFirstResponder];
