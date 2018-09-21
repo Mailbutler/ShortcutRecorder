@@ -66,12 +66,6 @@ NSString *SRLoc(NSString *aKey)
 }
 
 
-NSImage *SRImage(NSString *anImageName)
-{
-    return [SRBundle() imageForResource:anImageName];
-}
-
-
 NSString *SRReadableStringForCocoaModifierFlagsAndKeyCode(NSEventModifierFlags aModifierFlags, unsigned short aKeyCode)
 {
     SRKeyCodeTransformer *t = [SRKeyCodeTransformer sharedPlainTransformer];
