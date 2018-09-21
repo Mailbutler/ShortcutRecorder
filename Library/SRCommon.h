@@ -88,11 +88,6 @@ NSString *SRLoc(NSString *aKey);
 
 
 /*!
-    Convenient method to get image from the framework bundle.
- */
-NSImage *SRImage(NSString *anImageName);
-
-/*!
     Returns string representation of shortcut with modifier flags replaced with their localized
     readable equivalents (e.g. ? -> Option).
  */

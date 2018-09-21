@@ -22,7 +22,7 @@ NSBundle *SRBundle()
     static dispatch_once_t onceToken;
     static NSBundle *Bundle = nil;
     dispatch_once(&onceToken, ^{
-        Bundle = [NSBundle bundleWithIdentifier:@"com.kulakov.ShortcutRecorder"];
+        Bundle = [NSBundle bundleWithIdentifier:@"com.mailbutler.ShortcutRecorder"];
 
         if (!Bundle)
         {
@@ -63,15 +63,6 @@ NSBundle *SRBundle()
 NSString *SRLoc(NSString *aKey)
 {
     return NSLocalizedStringFromTableInBundle(aKey, @"ShortcutRecorder", SRBundle(), nil);
-}
-
-
-NSImage *SRImage(NSString *anImageName)
-{
-    if (floor(NSAppKitVersionNumber) <= NSAppKitVersionNumber10_6)
-        return [[NSImage alloc] initByReferencingURL:[SRBundle() URLForImageResource:anImageName]];
-    else
-        return [SRBundle() imageForResource:anImageName];
 }
 
 
