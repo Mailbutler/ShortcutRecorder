@@ -70,7 +70,7 @@ extern NSString *const SRShortcutCharactersIgnoringModifiers;
                 Recommended min width: 100 points
  */
 IB_DESIGNABLE
-@interface SRRecorderControl : NSView /* <NSAccessibility, NSKeyValueBindingCreation, NSToolTipOwner, NSNibAwaking> */
+@interface SRRecorderControl : NSView <NSAccessibility>
 
 /*!
     The receiver’s delegate.
