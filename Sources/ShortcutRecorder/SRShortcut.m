@@ -427,8 +427,11 @@ SRShortcutKey const SRShortcutKeyCharactersIgnoringModifiers = @"charactersIgnor
 
 + (instancetype)new
 {
+#ifndef __clang_analyzer__
+    // Suppress static analyzer warning
     [self doesNotRecognizeSelector:_cmd];
     return nil;
+#endif
 }
 
 - (instancetype)init
