@@ -6,7 +6,7 @@ let package = Package(
     name: "ShortcutRecorder",
     defaultLocalization: "en",
     platforms: [
-        .macOS(.v10_11)
+        .macOS(.v10_13)
     ],
     products: [
         .library(name: "ShortcutRecorder", targets: ["ShortcutRecorder"])
