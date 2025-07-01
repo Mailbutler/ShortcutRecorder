@@ -362,6 +362,9 @@ NSUserInterfaceLayoutDirection SRRecorderControlStyleComponentsLayoutDirectionTo
             @(SRRecorderControlStyleComponentsLayoutDirectionRightToLeft): @[@(SRRecorderControlStyleComponentsLayoutDirectionRightToLeft),
                                                                              @(SRRecorderControlStyleComponentsLayoutDirectionLeftToRight)]
         };
+
+        (void)TintOrderMap;
+        (void)DirectionOrderMap;
     });
 
     __auto_type CompareEnum = ^(NSUInteger a, NSUInteger b, NSArray<NSNumber *> *order) {
