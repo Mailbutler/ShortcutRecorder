@@ -428,6 +428,7 @@ SRShortcutKey const SRShortcutKeyCharactersIgnoringModifiers = @"charactersIgnor
 + (instancetype)new
 {
     [self doesNotRecognizeSelector:_cmd];
+    __builtin_unreachable();
     return nil;
 }
 
