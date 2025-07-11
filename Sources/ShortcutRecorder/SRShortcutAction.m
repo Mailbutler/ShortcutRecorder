@@ -229,7 +229,9 @@ static void *_SRShortcutActionContext = &_SRShortcutActionContext;
     os_activity_initiate("-[SRShortcutAction performActionOnTarget:]", OS_ACTIVITY_FLAG_DEFAULT, ^{
         if (!self.isEnabled)
         {
-            os_log_debug(OS_LOG_DEFAULT, "Not performed: disabled");
+            if (SRDebugLogsEnabled()) {
+                os_log_debug(OS_LOG_DEFAULT, "Not performed: disabled");
+            }
             return;
         }
 
@@ -237,7 +239,9 @@ static void *_SRShortcutActionContext = &_SRShortcutActionContext;
 
         if (actionHandler)
         {
-            os_log_debug(OS_LOG_DEFAULT, "Using action handler");
+            if (SRDebugLogsEnabled()) {
+                os_log_debug(OS_LOG_DEFAULT, "Using action handler");
+            }
             isPerformed = actionHandler(self);
         }
         else
@@ -266,7 +270,9 @@ static void *_SRShortcutActionContext = &_SRShortcutActionContext;
 
             if (canPerformAction)
             {
-                os_log_debug(OS_LOG_DEFAULT, "Using action");
+                if (SRDebugLogsEnabled()) {
+                    os_log_debug(OS_LOG_DEFAULT, "Using action");
+                }
                 NSMethodSignature *sig = [target methodSignatureForSelector:action];
                 IMP actionMethod = [target methodForSelector:action];
                 BOOL returnsBool = strncmp(sig.methodReturnType, @encode(BOOL), 2) == 0;
@@ -300,7 +306,9 @@ static void *_SRShortcutActionContext = &_SRShortcutActionContext;
             }
             else if (canPerformProtocol)
             {
-                os_log_debug(OS_LOG_DEFAULT, "Using protocol");
+                if (SRDebugLogsEnabled()) {
+                    os_log_debug(OS_LOG_DEFAULT, "Using protocol");
+                }
                 isPerformed = [(id<SRShortcutActionTarget>)target performShortcutAction:self];
             }
         }
@@ -1021,7 +1029,9 @@ static OSStatus _SRCarbonEventHandler(EventHandlerCallRef aHandler, EventRef anE
 {
     @synchronized (_actions)
     {
-        os_log_debug(OS_LOG_DEFAULT, "Global Shortcut Monitor counter: %{public}ld -> %{public}ld", _disableCounter, _disableCounter - 1);
+        if (SRDebugLogsEnabled()) {
+            os_log_debug(OS_LOG_DEFAULT, "Global Shortcut Monitor counter: %{public}ld -> %{public}ld", _disableCounter, _disableCounter - 1);
+        }
         _disableCounter -= 1;
 
         if (_disableCounter == 0)
@@ -1038,7 +1048,9 @@ static OSStatus _SRCarbonEventHandler(EventHandlerCallRef aHandler, EventRef anE
 {
     @synchronized (_actions)
     {
-        os_log_debug(OS_LOG_DEFAULT, "Global Shortcut Monitor counter: %{public}ld -> %{public}ld", _disableCounter, _disableCounter + 1);
+        if (SRDebugLogsEnabled()) {
+            os_log_debug(OS_LOG_DEFAULT, "Global Shortcut Monitor counter: %{public}ld -> %{public}ld", _disableCounter, _disableCounter + 1);
+        }
         _disableCounter += 1;
 
         if (_disableCounter == 1)
@@ -1058,7 +1070,9 @@ static OSStatus _SRCarbonEventHandler(EventHandlerCallRef aHandler, EventRef anE
     os_activity_initiate("-[SRGlobalShortcutMonitor handleEvent:]", OS_ACTIVITY_FLAG_DETACHED, ^{
         if (self->_disableCounter > 0)
         {
-            os_log_debug(OS_LOG_DEFAULT, "Monitoring is currently disabled");
+            if (SRDebugLogsEnabled()) {
+                os_log_debug(OS_LOG_DEFAULT, "Monitoring is currently disabled");
+            }
             return;
         }
 
@@ -1080,7 +1094,9 @@ static OSStatus _SRCarbonEventHandler(EventHandlerCallRef aHandler, EventRef anE
 
             if (!shortcut)
             {
-                os_log(OS_LOG_DEFAULT, "Unregistered hot key with id %{public}u and signature %{public}u", hotKeyID.id, hotKeyID.signature);
+                if (SRDebugLogsEnabled()) {
+                    os_log(OS_LOG_DEFAULT, "Unregistered hot key with id %{public}u and signature %{public}u", hotKeyID.id, hotKeyID.signature);
+                }
                 return;
             }
 
@@ -1124,12 +1140,16 @@ static OSStatus _SRCarbonEventHandler(EventHandlerCallRef aHandler, EventRef anE
 
 - (void)didAddEventHandler
 {
-    os_log_debug(OS_LOG_DEFAULT, "Added Carbon HotKey Event Handler");
+    if (SRDebugLogsEnabled()) {
+        os_log_debug(OS_LOG_DEFAULT, "Added Carbon HotKey Event Handler");
+    }
 }
 
 - (void)didRemoveEventHandler
 {
-    os_log_debug(OS_LOG_DEFAULT, "Removed Carbon HotKey Event Handler");
+    if (SRDebugLogsEnabled()) {
+        os_log_debug(OS_LOG_DEFAULT, "Removed Carbon HotKey Event Handler");
+    }
 }
 
 #pragma mark Private
@@ -1146,7 +1166,9 @@ static OSStatus _SRCarbonEventHandler(EventHandlerCallRef aHandler, EventRef anE
         { kEventClassKeyboard, kEventHotKeyPressed },
         { kEventClassKeyboard, kEventHotKeyReleased }
     };
-    os_log(OS_LOG_DEFAULT, "Installing Carbon hot key event handler");
+    if (SRDebugLogsEnabled()) {
+        os_log(OS_LOG_DEFAULT, "Installing Carbon hot key event handler");
+    }
     OSStatus error = InstallEventHandler(GetEventDispatcherTarget(),
                                          _SRCarbonEventHandler,
                                          sizeof(EventSpec) / sizeof(EventTypeSpec),
@@ -1171,7 +1193,9 @@ static OSStatus _SRCarbonEventHandler(EventHandlerCallRef aHandler, EventRef anE
     if (_disableCounter <= 0 && _shortcutToHotKeyRef.count)
         return;
 
-    os_log(OS_LOG_DEFAULT, "Removing Carbon hot key event handler");
+    if (SRDebugLogsEnabled()) {
+        os_log(OS_LOG_DEFAULT, "Removing Carbon hot key event handler");
+    }
     OSStatus error = RemoveEventHandler(_carbonEventHandler);
 
     if (error != noErr)
@@ -1197,7 +1221,9 @@ static OSStatus _SRCarbonEventHandler(EventHandlerCallRef aHandler, EventRef anE
 
     static UInt32 CarbonID = _SRInvalidHotKeyID;
     EventHotKeyID hotKeyID = {SRShortcutActionSignature, ++CarbonID};
-    os_log(OS_LOG_DEFAULT, "Registering Carbon hot key");
+    if (SRDebugLogsEnabled()) {
+        os_log(OS_LOG_DEFAULT, "Registering Carbon hot key");
+    }
     OSStatus error = RegisterEventHotKey(aShortcut.carbonKeyCode,
                                          aShortcut.carbonModifierFlags,
                                          hotKeyID,
@@ -1211,7 +1237,9 @@ static OSStatus _SRCarbonEventHandler(EventHandlerCallRef aHandler, EventRef anE
         return;
     }
 
-    os_log(OS_LOG_DEFAULT, "Registered Carbon hot key %{public}u (keyCode: %{public}u, modifierFlags: %{public}lu)", hotKeyID.id, aShortcut.keyCode, aShortcut.modifierFlags);
+    if (SRDebugLogsEnabled()) {
+        os_log(OS_LOG_DEFAULT, "Registered Carbon hot key %{public}u (keyCode: %{public}u, modifierFlags: %{public}lu)", hotKeyID.id, aShortcut.keyCode, aShortcut.modifierFlags);
+    }
 
     [_shortcutToHotKeyRef setObject:(__bridge id _Nullable)(hotKey) forKey:aShortcut];
     [_hotKeyIdToShortcut setObject:aShortcut forKey:@(hotKeyID.id)];
@@ -1227,7 +1255,9 @@ static OSStatus _SRCarbonEventHandler(EventHandlerCallRef aHandler, EventRef anE
 
     UInt32 hotKeyID = [_shortcutToHotKeyId objectForKey:aShortcut].unsignedIntValue;
 
-    os_log(OS_LOG_DEFAULT, "Removing Carbon hot key %{public}u", hotKeyID);
+    if (SRDebugLogsEnabled()) {
+        os_log(OS_LOG_DEFAULT, "Removing Carbon hot key %{public}u", hotKeyID);
+    }
     OSStatus error = UnregisterEventHotKey(hotKey);
 
     if (error != noErr)
@@ -1236,7 +1266,9 @@ static OSStatus _SRCarbonEventHandler(EventHandlerCallRef aHandler, EventRef anE
     }
     else
     {
-        os_log(OS_LOG_DEFAULT, "Unregistered Carbon hot key %{public}u (keyCode: %{public}u, modifierFlags: %{public}lu)", hotKeyID, aShortcut.keyCode, aShortcut.modifierFlags);
+        if (SRDebugLogsEnabled()) {
+            os_log(OS_LOG_DEFAULT, "Unregistered Carbon hot key %{public}u (keyCode: %{public}u, modifierFlags: %{public}lu)", hotKeyID, aShortcut.keyCode, aShortcut.modifierFlags);
+        }
     }
 
     // Assume that an error to unregister the handler is due to the latter being invalid.

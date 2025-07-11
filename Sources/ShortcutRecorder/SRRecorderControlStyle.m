@@ -721,7 +721,9 @@ NSUserInterfaceLayoutDirection SRRecorderControlStyleComponentsLayoutDirectionTo
 
     __block NSDictionary *info = nil;
     os_activity_initiate("-[SRRecorderControlStyleResourceLoader infoForStyle:]", OS_ACTIVITY_FLAG_DEFAULT, (^{
-        os_log_debug(OS_LOG_DEFAULT, "Fetching info (identifier: %{public}s)", aStyle.identifier.UTF8String);
+        if (SRDebugLogsEnabled()) {
+            os_log_debug(OS_LOG_DEFAULT, "Fetching info (identifier: %{public}s)", aStyle.identifier.UTF8String);
+        }
 
         @synchronized (self)
         {
@@ -729,7 +731,9 @@ NSUserInterfaceLayoutDirection SRRecorderControlStyleComponentsLayoutDirectionTo
 
             if (!info)
             {
-                os_log_debug(OS_LOG_DEFAULT, "Info is not in cache");
+                if (SRDebugLogsEnabled()) {
+                    os_log_debug(OS_LOG_DEFAULT, "Info is not in cache");
+                }
                 NSString *resourceName = [NSString stringWithFormat:@"%@-info", aStyle.identifier];
                 NSData *data = [[NSDataAsset alloc] initWithName:resourceName bundle:SRBundle()].data;
 
@@ -786,8 +790,11 @@ NSUserInterfaceLayoutDirection SRRecorderControlStyleComponentsLayoutDirectionTo
                 info = [infoInProgress copy];
                 [self->_cache setObject:info forKey:aStyle.identifier];
             }
-            else
-                os_log_debug(OS_LOG_DEFAULT, "Info is in cache");
+            else {
+                if (SRDebugLogsEnabled()) {
+                    os_log_debug(OS_LOG_DEFAULT, "Info is in cache");
+                }
+            }
         }
     }));
 
@@ -798,7 +805,9 @@ NSUserInterfaceLayoutDirection SRRecorderControlStyleComponentsLayoutDirectionTo
 {
     __block NSArray *lookupPrefixes = nil;
     os_activity_initiate("-[SRRecorderControlStyleResourceLoader lookupPrefixesForStyle:]", OS_ACTIVITY_FLAG_DEFAULT, (^{
-        os_log_debug(OS_LOG_DEFAULT, "Fetching lookup prefixes (identifier: %{public}s)", aStyle.identifier.UTF8String);
+        if (SRDebugLogsEnabled()) {
+            os_log_debug(OS_LOG_DEFAULT, "Fetching lookup prefixes (identifier: %{public}s)", aStyle.identifier.UTF8String);
+        }
 
         @synchronized (self)
         {
@@ -810,7 +819,9 @@ NSUserInterfaceLayoutDirection SRRecorderControlStyleComponentsLayoutDirectionTo
 
             if (!lookupPrefixes)
             {
-                os_log_debug(OS_LOG_DEFAULT, "Lookup prefixes are not in cache");
+                if (SRDebugLogsEnabled()) {
+                    os_log_debug(OS_LOG_DEFAULT, "Lookup prefixes are not in cache");
+                }
                 SRRecorderControlStyleComponents *effectiveComponents = aStyle.effectiveComponents;
                 NSComparator cmp = ^NSComparisonResult(SRRecorderControlStyleComponents *a, SRRecorderControlStyleComponents *b) {
                     return [a compare:b relativeToComponents:effectiveComponents];
@@ -825,8 +836,11 @@ NSUserInterfaceLayoutDirection SRRecorderControlStyleComponentsLayoutDirectionTo
                 lookupPrefixes = [lookupPrefixes copy];
                 [self->_cache setObject:lookupPrefixes forKey:key];
             }
-            else
-                os_log_debug(OS_LOG_DEFAULT, "Lookup prefixes are in cache");
+            else {
+                if (SRDebugLogsEnabled()) {
+                    os_log_debug(OS_LOG_DEFAULT, "Lookup prefixes are in cache");
+                }
+            }
         }
     }));
 
@@ -837,7 +851,9 @@ NSUserInterfaceLayoutDirection SRRecorderControlStyleComponentsLayoutDirectionTo
 {
     __block NSImage *image = nil;
     os_activity_initiate("-[SRRecorderControlStyleResourceLoader imageNamed:forStyle:]", OS_ACTIVITY_FLAG_DEFAULT, (^{
-        os_log_debug(OS_LOG_DEFAULT, "Fetching image name (identifier: %{public}s, image: %{public}s)", aStyle.identifier.UTF8String, aName.UTF8String);
+        if (SRDebugLogsEnabled()) {
+            os_log_debug(OS_LOG_DEFAULT, "Fetching image name (identifier: %{public}s, image: %{public}s)", aStyle.identifier.UTF8String, aName.UTF8String);
+        }
 
         @synchronized (self)
         {
@@ -849,7 +865,9 @@ NSUserInterfaceLayoutDirection SRRecorderControlStyleComponentsLayoutDirectionTo
 
             if (!imageNameCache)
             {
-                os_log_debug(OS_LOG_DEFAULT, "Image name is not in cache");
+                if (SRDebugLogsEnabled()) {
+                    os_log_debug(OS_LOG_DEFAULT, "Image name is not in cache");
+                }
                 NSString *imageName = nil;
                 BOOL usesSRImage = YES;
 
@@ -879,7 +897,9 @@ NSUserInterfaceLayoutDirection SRRecorderControlStyleComponentsLayoutDirectionTo
             }
             else
             {
-                os_log_debug(OS_LOG_DEFAULT, "Image name is in cache");
+                if (SRDebugLogsEnabled()) {
+                    os_log_debug(OS_LOG_DEFAULT, "Image name is in cache");
+                }
                 NSString *imageName = imageNameCache[0];
                 BOOL usesSRImage = [imageNameCache[1] boolValue];
 

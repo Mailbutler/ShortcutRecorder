@@ -4,6 +4,7 @@
 //
 
 #import <objc/runtime.h>
+#import <stdatomic.h>
 
 #import "ShortcutRecorder/SRCommon.h"
 
@@ -35,6 +36,16 @@ SRModifierFlagString const SRModifierFlagStringOption = @"⌥";
 SRModifierFlagString const SRModifierFlagStringShift = @"⇧";
 SRModifierFlagString const SRModifierFlagStringControl = @"⌃";
 
+static _Atomic bool _gDebugLogsEnabled = false;
+
+void SREnableDebugLogs(BOOL enabled)
+{
+    atomic_store(&_gDebugLogsEnabled, enabled);
+}
+
+BOOL SRDebugLogsEnabled(void) {
+    return atomic_load(&_gDebugLogsEnabled);
+}
 
 NSBundle *SRBundle(void)
 {

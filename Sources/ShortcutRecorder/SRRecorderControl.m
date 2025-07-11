@@ -755,12 +755,16 @@ static void *_SRStyleGuideObservingContext = &_SRStyleGuideObservingContext;
 
     if (left && center && right)
     {
-        os_log_debug(OS_LOG_DEFAULT, "#Developer drawing background using images");
+        if (SRDebugLogsEnabled()) {
+            os_log_debug(OS_LOG_DEFAULT, "#Developer drawing background using images");
+        }
         NSDrawThreePartImage(backgroundFrame, left, center, right, NO, NSCompositingOperationSourceOver, 1.0, self.isFlipped);
     }
     else
     {
-        os_log_debug(OS_LOG_DEFAULT, "#Developer drawing background using color");
+        if (SRDebugLogsEnabled()) {
+            os_log_debug(OS_LOG_DEFAULT, "#Developer drawing background using color");
+        }
 
         if (self.isOpaque)
             [NSColor.windowBackgroundColor setFill];
@@ -1009,17 +1013,23 @@ static void *_SRStyleGuideObservingContext = &_SRStyleGuideObservingContext;
 {
     if (!self.enabled)
     {
-        os_log_debug(OS_LOG_DEFAULT, "The control is disabled");
+        if (SRDebugLogsEnabled()) {
+            os_log_debug(OS_LOG_DEFAULT, "The control is disabled");
+        }
         return NO;
     }
     else if (self.window.firstResponder != self)
     {
-        os_log_debug(OS_LOG_DEFAULT, "The control is not the first responder");
+        if (SRDebugLogsEnabled()) {
+            os_log_debug(OS_LOG_DEFAULT, "The control is not the first responder");
+        }
         return NO;
     }
     else if (self->_mouseTrackingButtonTag != _SRRecorderControlInvalidButtonTag)
     {
-        os_log_debug(OS_LOG_DEFAULT, "The control is tracking %{public}lu", self->_mouseTrackingButtonTag);
+        if (SRDebugLogsEnabled()) {
+            os_log_debug(OS_LOG_DEFAULT, "The control is tracking %{public}lu", self->_mouseTrackingButtonTag);
+        }
         return NO;
     }
     else
@@ -1049,18 +1059,24 @@ static void *_SRStyleGuideObservingContext = &_SRStyleGuideObservingContext;
         {
             if (DelegateCanRecordShortcut(aShortcut))
             {
-                os_log_debug(OS_LOG_DEFAULT, "Valid and accepted shortcut");
+                if (SRDebugLogsEnabled()) {
+                    os_log_debug(OS_LOG_DEFAULT, "Valid and accepted shortcut");
+                }
                 result = YES;
             }
             else
             {
-                os_log_debug(OS_LOG_DEFAULT, "Delegate rejected");
+                if (SRDebugLogsEnabled()) {
+                    os_log_debug(OS_LOG_DEFAULT, "Delegate rejected");
+                }
                 result = NO;
             }
         }
         else
         {
-            os_log_debug(OS_LOG_DEFAULT, "Modifier flags %{public}lu rejected", aShortcut.modifierFlags);
+            if (SRDebugLogsEnabled()) {
+                os_log_debug(OS_LOG_DEFAULT, "Modifier flags %{public}lu rejected", aShortcut.modifierFlags);
+            }
             result = NO;
         }
     });
@@ -1737,7 +1753,9 @@ static void *_SRStyleGuideObservingContext = &_SRStyleGuideObservingContext;
                 anEvent.keyCode == SRKeyCodeEscape &&
                 (anEvent.modifierFlags & SRCocoaModifierFlagsMask) == 0)
             {
-                os_log_debug(OS_LOG_DEFAULT, "Cancel via Esc");
+                if (SRDebugLogsEnabled()) {
+                    os_log_debug(OS_LOG_DEFAULT, "Cancel via Esc");
+                }
                 [self endRecording];
                 result = YES;
             }
@@ -1745,7 +1763,9 @@ static void *_SRStyleGuideObservingContext = &_SRStyleGuideObservingContext;
                     (anEvent.keyCode == SRKeyCodeDelete || anEvent.keyCode == SRKeyCodeForwardDelete) &&
                     (anEvent.modifierFlags & SRCocoaModifierFlagsMask) == 0)
             {
-                os_log_debug(OS_LOG_DEFAULT, "Clear via Delete");
+                if (SRDebugLogsEnabled()) {
+                    os_log_debug(OS_LOG_DEFAULT, "Clear via Delete");
+                }
                 [self clearAndEndRecording];
                 result = YES;
             }
@@ -1766,7 +1786,9 @@ static void *_SRStyleGuideObservingContext = &_SRStyleGuideObservingContext;
         }
         else if (anEvent.keyCode == SRKeyCodeSpace)
         {
-            os_log_debug(OS_LOG_DEFAULT, "Begin recording via Space");
+            if (SRDebugLogsEnabled()) {
+                os_log_debug(OS_LOG_DEFAULT, "Begin recording via Space");
+            }
             result = [self beginRecording];
         }
         else

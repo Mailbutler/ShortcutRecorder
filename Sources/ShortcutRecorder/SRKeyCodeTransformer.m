@@ -204,11 +204,16 @@ typedef TISInputSourceRef (*_SRKeyCodeTransformerCacheInputSourceCreate)(void);
 
             if (translation)
             {
-                os_log_debug(OS_LOG_DEFAULT, "Translation cache hit");
+                if (SRDebugLogsEnabled()) {
+                    os_log_debug(OS_LOG_DEFAULT, "Translation cache hit");
+                }
                 return translation;
             }
-            else
-                os_log_debug(OS_LOG_DEFAULT, "Translation cache miss");
+            else {
+                if (SRDebugLogsEnabled()) {
+                    os_log_debug(OS_LOG_DEFAULT, "Translation cache miss");
+                }
+            }
         }
 
         CFDataRef layoutData = TISGetInputSourceProperty(inputSource, kTISPropertyUnicodeKeyLayoutData);
@@ -306,7 +311,9 @@ typedef TISInputSourceRef (*_SRKeyCodeTransformerCacheInputSourceCreate)(void);
         if ([_inputSourceIdentifier isEqualToString:sourceIdentifier])
             return _translationToKeyCode[aTranslation];
 
-        os_log_debug(OS_LOG_DEFAULT, "Updating translation -> key code mapping");
+        if (SRDebugLogsEnabled()) {
+            os_log_debug(OS_LOG_DEFAULT, "Updating translation -> key code mapping");
+        }
 
         __auto_type knownKeyCodes = SRKeyCodeTransformer.knownKeyCodes;
         NSMutableDictionary *newTranslationToKeyCode = [NSMutableDictionary dictionaryWithCapacity:knownKeyCodes.count];

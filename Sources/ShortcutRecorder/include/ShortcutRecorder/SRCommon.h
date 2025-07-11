@@ -10,6 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+void SREnableDebugLogs(BOOL enabled);
+BOOL SRDebugLogsEnabled(void);
+
 /*!
  Mask representing subset of Cocoa modifier flags suitable for shortcuts.
  */
