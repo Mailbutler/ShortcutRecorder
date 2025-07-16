@@ -1118,7 +1118,9 @@ static OSStatus _SRCarbonEventHandler(EventHandlerCallRef aHandler, EventRef anE
 
             if (!actions.count)
             {
-                os_log(OS_LOG_DEFAULT, "No actions for the shortcut");
+                if (SRDebugLogsEnabled()) {
+                    os_log_debug(OS_LOG_DEFAULT, "No actions for the shortcut");
+                }
                 return;
             }
 
